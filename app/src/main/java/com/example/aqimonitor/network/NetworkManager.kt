@@ -6,6 +6,8 @@ class NetworkManager {
 
     companion object {
 
+        val BASE_URL = "ws://city-ws.herokuapp.com/"
+
         @Volatile
         private var networkClient: OkHttpClient? = null
 
