@@ -14,4 +14,8 @@
     <dimen name="standard_margin_x3">24dp</dimen>
     <dimen name="standard_margin_x4">32dp</dimen>
 
+    <dimen name="standard_font">14sp</dimen>
+    <dimen name="small_font">13sp</dimen>
+    <dimen name="smaller_font">12sp</dimen>
+
 </resources>

@@ -15,36 +15,58 @@
 
         <TextView
             android:id="@+id/textViewCity"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/textViewCurrentAQI"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/cities" />
 
         <TextView
             android:id="@+id/textViewCurrentAQI"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="end"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toEndOf="@id/textViewCity"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/us_zipcodes" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="textViewCurrentAQI,textViewCity" />
+
+        <TextView
+            android:id="@+id/textViewHintMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standard_margin_half"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/textViewLastUpdated"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier1"
+            tools:text="@string/text_air_quality" />
 
         <TextView
             android:id="@+id/textViewLastUpdated"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:layout_marginTop="@dimen/standard_margin_half"
+            android:gravity="end"
+            android:textSize="@dimen/smaller_font"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toEndOf="@id/textViewCity"
-            app:layout_constraintTop_toBottomOf="@id/textViewCurrentAQI"
-            tools:text="@tools:sample/date/ddmmyy" />
+            app:layout_constraintStart_toEndOf="@id/textViewHintMessage"
+            app:layout_constraintTop_toBottomOf="@id/barrier1"
+            tools:text="@string/text_last_updated" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
