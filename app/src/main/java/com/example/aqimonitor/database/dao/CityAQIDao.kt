@@ -10,7 +10,7 @@ import com.example.aqimonitor.database.model.CityAQIData
 @Dao
 interface CityAQIDao {
 
-    @Query("select * from cityaqidata")
+    @Query("select * from cityaqidata order by city_name")
     fun getAllCityAQIDao(): LiveData<List<CityAQIData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
