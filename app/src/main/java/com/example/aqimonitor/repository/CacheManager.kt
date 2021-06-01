@@ -29,13 +29,15 @@ class CacheManager(context: Context) {
         // val currentTime = System.nanoTime() / 1000000000 / 60 / 60 / 24 // value in days
         // val dbLastRefreshed = getLastServerCallTime() / 1000000000 / 60 / 60 / 24 // value in days
 
-        return if (sharedPref.contains(prefKeyServerCallTimestamp)) {
+        /* return if (sharedPref.contains(prefKeyServerCallTimestamp)) {
             val currentTime = System.nanoTime() / 1000000000 / 60 // value in minutes
             val dbLastRefreshed = getLastServerCallTime() / 1000000000 / 60  // value in minutes
             (currentTime - dbLastRefreshed) >= 10 // do a refresh if data is older than 10 minutes
         } else {
             true // user launched app for the first time, shared prefs is not set
-        }
+        } */
+        // todo fix bug in caching logic to reduce load on server
+        return true
     }
 
 }
