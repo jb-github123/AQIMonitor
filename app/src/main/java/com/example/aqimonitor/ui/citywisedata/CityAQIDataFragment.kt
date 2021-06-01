@@ -15,7 +15,6 @@ import com.example.aqimonitor.database.model.CityAQIData
 import com.example.aqimonitor.helpers.AQIGradeFormatter
 import com.example.aqimonitor.helpers.StringFormatter
 import com.example.aqimonitor.ui.citywisedata.adapter.CityAQIDataListAdapter
-import com.example.aqimonitor.ui.home.adapter.CityListAdapter
 
 class CityAQIDataFragment : Fragment() {
 

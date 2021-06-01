@@ -16,7 +16,6 @@ class CityAQIDataListAdapter(
 ) : RecyclerView.Adapter<CityAQIDataListAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textViewCity: TextView = itemView.findViewById(R.id.textViewCity)
         val textViewHintMessage: TextView = itemView.findViewById(R.id.textViewHintMessage)
         val textViewCurrentAQI: TextView = itemView.findViewById(R.id.textViewCurrentAQI)
         val textViewLastUpdated: TextView = itemView.findViewById(R.id.textViewLastUpdated)
@@ -24,7 +23,7 @@ class CityAQIDataListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recycler_view_row_city_list, parent, false)
+            .inflate(R.layout.recycler_view_row_city_aqi_data, parent, false)
         return ViewHolder(view)
     }
 
@@ -32,9 +31,8 @@ class CityAQIDataListAdapter(
         val aqiValue =
             StringFormatter.getDoubleFormatterWithTwoDecimals(list[position].currentAQI.toDouble())
 
-        holder.textViewCity.text = list[position].cityName
         holder.textViewHintMessage.text = holder.itemView.context.getString(
-            R.string.text_air_quality,
+            R.string.text_air_quality_was,
             AQIGradeFormatter.getAQIHintHighlights(aqiValue)
         )
         holder.textViewCurrentAQI.text = aqiValue
@@ -46,7 +44,7 @@ class CityAQIDataListAdapter(
             )
         )
         holder.textViewLastUpdated.text = holder.itemView.context.getString(
-            R.string.text_last_updated,
+            R.string.text_last_updated_single_line_placeholder,
             DateFormatter.getFormattedTimestamp(list[position].lastUpdated)
         )
     }

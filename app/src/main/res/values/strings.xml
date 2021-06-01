@@ -12,6 +12,8 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="text_last_updated">Last Updated:\n%1$s</string>
+    <string name="text_last_updated_single_line_placeholder">Last Updated: %1$s</string>
 
     <string name="text_air_quality">Air quality is %1$s</string>
+    <string name="text_air_quality_was">Air quality was %1$s</string>
 </resources>

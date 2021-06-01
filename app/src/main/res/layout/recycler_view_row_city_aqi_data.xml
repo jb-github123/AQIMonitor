@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/activity_horizontal_margin"
-    android:layout_marginTop="@dimen/standard_margin"
-    android:layout_marginEnd="@dimen/activity_vertical_margin">
+    android:layout_marginTop="@dimen/standard_margin_half"
+    android:layout_marginEnd="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="@dimen/standard_margin_half">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,15 +16,34 @@
         android:padding="@dimen/standard_margin_x2">
 
         <TextView
-            android:id="@+id/textViewCity"
+            android:id="@+id/textViewHintMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:layout_marginTop="@dimen/standard_margin_half"
+            app:layout_constraintBottom_toTopOf="@id/textViewLastUpdated"
             app:layout_constraintEnd_toStartOf="@id/textViewCurrentAQI"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@tools:sample/cities" />
+            tools:text="@string/text_air_quality_was" />
+
+        <TextView
+            android:id="@+id/textViewLastUpdated"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:textSize="@dimen/smaller_font"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/textViewCurrentAQI"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewHintMessage"
+            tools:text="@string/text_last_updated_single_line_placeholder" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="textViewHintMessage,textViewLastUpdated" />
 
         <TextView
             android:id="@+id/textViewCurrentAQI"
@@ -32,42 +52,11 @@
             android:gravity="end"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toEndOf="@id/textViewCity"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/us_zipcodes" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="textViewCurrentAQI,textViewCity" />
-
-        <TextView
-            android:id="@+id/textViewHintMessage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin_half"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/textViewLastUpdated"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier1"
-            tools:text="@string/text_air_quality" />
-
-        <TextView
-            android:id="@+id/textViewLastUpdated"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin_half"
-            android:gravity="end"
-            android:textSize="@dimen/smaller_font"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/textViewHintMessage"
-            app:layout_constraintTop_toBottomOf="@id/barrier1"
-            tools:text="@string/text_last_updated" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
