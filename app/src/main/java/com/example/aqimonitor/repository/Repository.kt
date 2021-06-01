@@ -3,6 +3,7 @@ package com.example.aqimonitor.repository
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.aqimonitor.config.DEBUG_ON
 import com.example.aqimonitor.database.AppDatabase
 import com.example.aqimonitor.database.dao.CityAQIDao
 import com.example.aqimonitor.database.model.CityAQIData
@@ -96,7 +97,7 @@ class Repository(private val application: Application) :
                 System.currentTimeMillis()
             )
             newCityAQIDataList.add(cityAQIData)
-            Log.e(TAG, "city ${cityAQIData.cityName} - ${cityAQIData.currentAQI} - ${cityAQIData.lastUpdated}")
+            if(DEBUG_ON) Log.e(TAG, "city ${cityAQIData.cityName} - ${cityAQIData.currentAQI} - ${cityAQIData.lastUpdated}")
         }
         // loop
 
