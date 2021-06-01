@@ -46,6 +46,7 @@ class HomeFragment : Fragment() {
         homeViewModel.getCityAQIDataFromDB().observe(viewLifecycleOwner, Observer {
             cityList.clear()
             cityList.addAll(it)
+            recyclerViewCities.adapter?.notifyDataSetChanged()
         })
 
         homeViewModel.refreshCityAQIData()
