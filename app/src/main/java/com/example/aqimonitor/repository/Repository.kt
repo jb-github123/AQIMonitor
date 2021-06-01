@@ -81,7 +81,6 @@ class Repository(private val application: Application) :
         var cityAQIData: CityAQIData
         for (aqiCityData in aqiDataResponseJSON) {
             cityAQIData = CityAQIData(
-                0,
                 aqiCityData.city,
                 aqiCityData.aqi,
                 System.currentTimeMillis()
