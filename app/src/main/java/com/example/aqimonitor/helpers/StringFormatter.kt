@@ -8,8 +8,8 @@ object StringFormatter {
         return DecimalFormat("#.00").format(value)
     }
 
-    fun getDoubleFormatterWithTwoDecimals_v2(value: Double): String {
-        return String.format("%.2d").format(value)
+    fun getDoubleFormatterWithTwoDecimalsV2(value: Double): String {
+        return String.format("%.2f", value)
     }
 
 }

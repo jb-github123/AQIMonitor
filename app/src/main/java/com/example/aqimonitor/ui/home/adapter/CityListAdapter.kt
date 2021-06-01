@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.aqimonitor.R
 import com.example.aqimonitor.database.model.CityAQIData
 import com.example.aqimonitor.helpers.DateFormatter
+import com.example.aqimonitor.helpers.StringFormatter
 
 class CityListAdapter(private val list: ArrayList<CityAQIData>) :
     RecyclerView.Adapter<CityListAdapter.ViewHolder>() {
@@ -26,7 +27,7 @@ class CityListAdapter(private val list: ArrayList<CityAQIData>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.textViewCity.text = list[position].cityName
-        holder.textViewCurrentAQI.text = list[position].currentAQI
+        holder.textViewCurrentAQI.text = StringFormatter.getDoubleFormatterWithTwoDecimals(list[position].currentAQI.toDouble())
         holder.textViewLastUpdated.text = DateFormatter.getFormattedTimestamp(list[position].lastUpdated)
     }
 
