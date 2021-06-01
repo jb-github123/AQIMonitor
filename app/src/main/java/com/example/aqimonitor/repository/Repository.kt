@@ -8,20 +8,23 @@ import com.example.aqimonitor.database.dao.CityAQIDao
 import com.example.aqimonitor.database.model.CityAQIData
 import com.example.aqimonitor.network.NetworkManager
 import com.example.aqimonitor.network.model.AQIDataResponse
-import com.example.aqimonitor.network.websocketlistener.SingleResponseWebSocketListener
+import com.example.aqimonitor.network.websocketlistener.MultipleResponseWebSocketListener
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.Request
+import okhttp3.WebSocket
 
 class Repository(private val application: Application) :
-    SingleResponseWebSocketListener.OnSingleMessageReceivedListener {
+    MultipleResponseWebSocketListener.OnMultipleMessageReceivedListener {
 
     private val TAG = Repository::class.java.simpleName
 
     private var cityAQIDao: CityAQIDao
     private val newCityAQIDataList = ArrayList<CityAQIData>()
+
+    private var webSocket: WebSocket? = null
 
     init {
         // get db instance
@@ -39,17 +42,25 @@ class Repository(private val application: Application) :
         }
     }
 
+    fun stopAQIDataUpdatesFromServer(){
+        webSocket?.close(NetworkManager.SOCKET_NORMAL_CLOSE,
+            "Data pulled for storing in db. Thank You!")
+        webSocket = null
+    }
+
     /**
      * get data from server via api call
      */
     private suspend fun getAQIDataFromServer() {
         // create a socket connection and get data from server, close connection, store data in db
         val request: Request = Request.Builder().url(NetworkManager.BASE_URL).build()
-        val webSocket = NetworkManager.getInstance().newWebSocket(request, SingleResponseWebSocketListener(this))
-        NetworkManager.getInstance().dispatcher.executorService.shutdown()
+        if(webSocket == null){
+            webSocket = NetworkManager.getInstance().newWebSocket(request, MultipleResponseWebSocketListener(this))
+            // NetworkManager.getInstance().dispatcher.executorService.shutdown()
+        }
     }
 
-    override fun onSingleAQIDataReceived(jsonString: String) {
+    override fun onMultipleAQIDataReceived(jsonString: String) {
         CacheManager(application).setLastServerCallTime()
 
         /* val moshi: Moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
@@ -57,7 +68,6 @@ class Repository(private val application: Application) :
         val AQIDataResponseJSON: AQIDataResponse? = jsonAdapter.fromJson(text)
         System.out.println(AQIDataResponseJSON) */
 
-        // todo save data in db
         GlobalScope.launch(Dispatchers.IO) {
             saveAQIDataInDb(jsonString)
         }
