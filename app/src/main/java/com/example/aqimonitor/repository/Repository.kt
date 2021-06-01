@@ -92,6 +92,7 @@ class Repository(private val application: Application) :
         var cityAQIData: CityAQIData
         for (aqiCityData in aqiDataResponseJSON) {
             cityAQIData = CityAQIData(
+                0,
                 aqiCityData.city,
                 aqiCityData.aqi,
                 System.currentTimeMillis()
@@ -110,5 +111,12 @@ class Repository(private val application: Application) :
      * return data stored in db, set observers on this method to check for data changes
      */
     fun getAQIDataFromDB(): LiveData<List<CityAQIData>> = cityAQIDao.getAllCityAQIData()
+
+    /**
+     * return data stored in db for a particular city, set observers on this method to check for data changes
+     */
+    fun getCityAQIDataFromDB(cityName: String): LiveData<List<CityAQIData>> {
+        return cityAQIDao.getCityAQIData(cityName)
+    }
 
 }

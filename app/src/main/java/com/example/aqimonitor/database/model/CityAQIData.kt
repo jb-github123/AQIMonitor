@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 class CityAQIData(
-    // @PrimaryKey(autoGenerate = true) val id: Int,
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    // @PrimaryKey
     @ColumnInfo(name = "city_name") val cityName: String,
     @ColumnInfo(name = "current_aqi") val currentAQI: String,
     @ColumnInfo(name = "last_updated_timestamp")val lastUpdated: Long
