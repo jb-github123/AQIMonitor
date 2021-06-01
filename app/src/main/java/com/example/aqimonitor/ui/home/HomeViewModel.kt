@@ -1,12 +1,10 @@
 package com.example.aqimonitor.ui.home
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.aqimonitor.database.model.CityAQIData
 import com.example.aqimonitor.repository.Repository
+import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -25,7 +23,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun refreshCityAQIData(){
-        return repository.refreshCityAQIData()
+        viewModelScope.launch {
+            repository.refreshCityAQIData()
+        }
     }
 
 }

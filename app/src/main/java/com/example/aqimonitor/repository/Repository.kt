@@ -8,6 +8,8 @@ import com.example.aqimonitor.database.AppDatabase
 import com.example.aqimonitor.database.dao.CityAQIDao
 import com.example.aqimonitor.database.model.CityAQIData
 import com.example.aqimonitor.network.NetworkManager
+import com.example.aqimonitor.network.model.AQIDataResponse
+import com.google.gson.Gson
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -30,7 +32,7 @@ class Repository(private val application: Application) {
      * decide if data needs to be refreshed in db from server, if required get updated data and
      * store it in db
      */
-    fun refreshCityAQIData() {
+    suspend fun refreshCityAQIData() {
         if (CacheManager(application).isDataOutdated()) {
             getAQIDataFromServer()
         }
@@ -39,7 +41,7 @@ class Repository(private val application: Application) {
     /**
      * get data from server via api call
      */
-    private fun getAQIDataFromServer() {
+     private suspend fun getAQIDataFromServer() {
 
         val listener: WebSocketListener = object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
@@ -50,11 +52,33 @@ class Repository(private val application: Application) {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 super.onMessage(webSocket, text)
                 Log.e(NETWORK_RESPONSE_TAG, "WebSocket response - $text")
+                webSocket.close(
+                    NetworkManager.SOCKET_NORMAL_CLOSE,
+                    "Data pulled for storing in db. Thank You!"
+                )
 
                 CacheManager(application).setLastServerCallTime()
 
-                // todo loop
-                // newCityAQIDataList.add()
+                /* val moshi: Moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+                val jsonAdapter: JsonAdapter<AQIDataResponse> = moshi.adapter(AQIDataResponse::class.java)
+                val AQIDataResponseJSON: AQIDataResponse? = jsonAdapter.fromJson(text)
+                System.out.println(AQIDataResponseJSON) */
+
+                val gson: Gson = Gson()
+                // val AQIDataResponseJSON: AQIDataResponse = gson.fromJson(text, AQIDataResponse::class.java)
+                val aqiDataResponseJSON: Array<AQIDataResponse> = gson.fromJson(
+                    text,
+                    Array<AQIDataResponse>::class.java
+                )
+
+                // loop
+                newCityAQIDataList.clear()
+                var cityAQIData: CityAQIData
+                for(aqiCityData in aqiDataResponseJSON){
+                    cityAQIData = CityAQIData(0, aqiCityData.city, aqiCityData.aqi, System.currentTimeMillis())
+                    newCityAQIDataList.add(cityAQIData)
+                    Log.e(NETWORK_RESPONSE_TAG, "city ${cityAQIData.cityName} - ${cityAQIData.currentAQI} - ${cityAQIData.lastUpdated}")
+                }
                 // loop
 
                 // todo save data in db
@@ -81,11 +105,29 @@ class Repository(private val application: Application) {
 
         }
 
+        // create a socket connection and get data from server, close connection, store data in db
         val request: Request = Request.Builder().url(NetworkManager.BASE_URL).build()
+        // val webSocket = NetworkManager.getInstance().newWebSocket(request, listener)
+        // NetworkManager.getInstance().dispatcher.executorService.shutdown()
 
-        // todo create a socket connection and get data from server, close connection, store data in db
-        val webSocket = NetworkManager.getInstance().newWebSocket(request, listener)
-        NetworkManager.getInstance().dispatcher.executorService.shutdown()
+        // test
+        /*val string = "[{\"city\":\"Bengaluru\",\"aqi\":190.22548991652587},{\"city\":\"Delhi\",\"aqi\":302.29710233852353},{\"city\":\"Kolkata\",\"aqi\":198.0494534403526},{\"city\":\"Bhubaneswar\",\"aqi\":100.36877451936344},{\"city\":\"Lucknow\",\"aqi\":75.14761417175275}]"
+        val gson: Gson = Gson()
+        // val AQIDataResponseJSON: AQIDataResponse = gson.fromJson(text, AQIDataResponse::class.java)
+        val aqiDataResponseJSON: Array<AQIDataResponse> = gson.fromJson(
+            string,
+            Array<AQIDataResponse>::class.java
+        )
+
+        newCityAQIDataList.clear()
+        var cityAQIData: CityAQIData
+        for((index, aqiCityData) in aqiDataResponseJSON.withIndex()){
+            cityAQIData = CityAQIData(0, aqiCityData.city, aqiCityData.aqi, System.currentTimeMillis())
+            newCityAQIDataList.add(cityAQIData)
+            Log.e(NETWORK_RESPONSE_TAG, "city ${cityAQIData.cityName} - ${cityAQIData.currentAQI} - ${cityAQIData.lastUpdated}")
+        }*/
+        //test
+
     }
 
     /**
