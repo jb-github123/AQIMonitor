@@ -28,10 +28,10 @@ class CityAQIDataFragment : Fragment() {
         cityAQIDataViewModel = ViewModelProvider(requireActivity()).get(CityAQIDataViewModel::class.java)
     }
 
-    /*override fun onResume() {
+    override fun onResume() {
         super.onResume()
         cityAQIDataViewModel.refreshCityAQIData()
-    }*/
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,9 +75,9 @@ class CityAQIDataFragment : Fragment() {
         return root
     }
 
-    /*override fun onPause() {
+    override fun onPause() {
         super.onPause()
         cityAQIDataViewModel.stopCityAQIDataUpdates()
-    }*/
+    }
 
 }
