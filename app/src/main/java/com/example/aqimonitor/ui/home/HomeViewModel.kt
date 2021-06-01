@@ -28,4 +28,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun stopCityAQIDataUpdates(){
+        repository.stopAQIDataUpdatesFromServer()
+    }
+
 }

@@ -25,6 +25,11 @@ class HomeFragment : Fragment() {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
     }
 
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.refreshCityAQIData()
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -49,8 +54,11 @@ class HomeFragment : Fragment() {
             recyclerViewCities.adapter?.notifyDataSetChanged()
         })
 
-        homeViewModel.refreshCityAQIData()
-
         return root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        homeViewModel.stopCityAQIDataUpdates()
     }
 }
