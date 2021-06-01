@@ -53,7 +53,7 @@ class CityListAdapter(
         )
         holder.textViewCurrentAQI.text = aqiValue
         holder.textViewCurrentAQI.setTextColor(
-            holder.itemView.context.getColor(
+            holder.itemView.context.resources.getColor(
                 AQIGradeFormatter.getAQIColorHighlights(
                     aqiValue
                 )
