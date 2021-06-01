@@ -13,7 +13,7 @@ import com.example.aqimonitor.R
 import com.example.aqimonitor.database.model.CityAQIData
 import com.example.aqimonitor.ui.home.adapter.CityListAdapter
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), CityListAdapter.CitySelectedListener {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerViewCities: RecyclerView
@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
             textView.text = it
         })*/
 
-        val cityListAdapter = CityListAdapter(cityList)
+        val cityListAdapter = CityListAdapter(cityList, this)
         recyclerViewCities = root.findViewById(R.id.recyclerViewCities)
         recyclerViewCities.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         recyclerViewCities.adapter = cityListAdapter
@@ -60,5 +60,9 @@ class HomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         homeViewModel.stopCityAQIDataUpdates()
+    }
+
+    override fun onCitySelected(cityAQIData: CityAQIData) {
+        // val navController = findNavController().navigate()
     }
 }
