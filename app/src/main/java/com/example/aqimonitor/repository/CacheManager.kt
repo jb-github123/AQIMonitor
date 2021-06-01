@@ -26,10 +26,16 @@ class CacheManager(context: Context) {
 
     fun isDataOutdated(): Boolean {
         // 1 second = 1000000000 nano seconds
-        val currentTime = System.nanoTime() / 1000000000 / 60 / 60 / 24
-        val dbLastRefreshed = getLastServerCallTime() / 1000000000 / 60 / 60 / 24
+        // val currentTime = System.nanoTime() / 1000000000 / 60 / 60 / 24 // value in days
+        // val dbLastRefreshed = getLastServerCallTime() / 1000000000 / 60 / 60 / 24 // value in days
 
-        return (currentTime - dbLastRefreshed) >= 1
+        return if (sharedPref.contains(prefKeyServerCallTimestamp)) {
+            val currentTime = System.nanoTime() / 1000000000 / 60 // value in minutes
+            val dbLastRefreshed = getLastServerCallTime() / 1000000000 / 60  // value in minutes
+            (currentTime - dbLastRefreshed) >= 10 // do a refresh if data is older than 10 minutes
+        } else {
+            true // user launched app for the first time, shared prefs is not set
+        }
     }
 
 }
