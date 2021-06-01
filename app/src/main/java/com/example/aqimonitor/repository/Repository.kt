@@ -109,6 +109,6 @@ class Repository(private val application: Application) :
     /**
      * return data stored in db, set observers on this method to check for data changes
      */
-    fun getAQIDataFromDB(): LiveData<List<CityAQIData>> = cityAQIDao.getAllCityAQIDao()
+    fun getAQIDataFromDB(): LiveData<List<CityAQIData>> = cityAQIDao.getAllCityAQIData()
 
 }
