@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aqimonitor.R
 import com.example.aqimonitor.database.model.CityAQIData
+import com.example.aqimonitor.ui.citywisedata.CityAQIDataViewModel
 import com.example.aqimonitor.ui.home.adapter.CityListAdapter
 
 class HomeFragment : Fragment(), CityListAdapter.CitySelectedListener {
@@ -19,10 +21,13 @@ class HomeFragment : Fragment(), CityListAdapter.CitySelectedListener {
     private lateinit var recyclerViewCities: RecyclerView
     private val cityList = ArrayList<CityAQIData>()
 
+    private lateinit var cityAQIDataViewModel: CityAQIDataViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        cityAQIDataViewModel = ViewModelProvider(requireActivity()).get(CityAQIDataViewModel::class.java)
     }
 
     override fun onResume() {
@@ -63,6 +68,7 @@ class HomeFragment : Fragment(), CityListAdapter.CitySelectedListener {
     }
 
     override fun onCitySelected(cityAQIData: CityAQIData) {
-        // val navController = findNavController().navigate()
+        cityAQIDataViewModel.setCityAQIData(cityAQIData)
+        findNavController().navigate(R.id.action_nav_home_to_nav_city_aqi_data)
     }
 }
