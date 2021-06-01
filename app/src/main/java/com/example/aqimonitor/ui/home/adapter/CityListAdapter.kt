@@ -27,6 +27,10 @@ class CityListAdapter(
         val textViewCurrentAQI: TextView = itemView.findViewById(R.id.textViewCurrentAQI)
         val textViewLastUpdated: TextView = itemView.findViewById(R.id.textViewLastUpdated)
 
+        init {
+            itemView.setOnClickListener(this)
+        }
+
         override fun onClick(v: View?) {
             citySelectedListener.onCitySelected(list[adapterPosition])
         }
