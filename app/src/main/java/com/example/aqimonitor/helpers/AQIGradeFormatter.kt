@@ -1,5 +1,6 @@
 package com.example.aqimonitor.helpers
 
+import androidx.annotation.ColorRes
 import com.example.aqimonitor.R
 import com.example.aqimonitor.config.DEBUG_ON
 import kotlin.math.roundToInt
@@ -44,6 +45,7 @@ object AQIGradeFormatter {
     /**
      * Returns the color code for the aqiValue based on range groups
      */
+    @ColorRes
     fun getAQIColorHighlights(aqiValue: String): Int {
         return when (getAQIGrade(aqiValue)) {
             AQI_GRADE_GOOD -> R.color.aqi_good
