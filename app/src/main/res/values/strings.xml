@@ -16,4 +16,15 @@
 
     <string name="text_air_quality">Air quality is %1$s</string>
     <string name="text_air_quality_was">Air quality was %1$s</string>
+
+    <string name="text_about">AQI Monitor\n\n
+AQI Monitor subscribes to a web socket using okHttp library and provides real time updates about air quality index(AQI) for selected cities.\n\n
+The app stores the fetched data in a local db and allows you to view available historical data when offline.\n\n
+When online you can view realtime data for any city you select.\n\n\n
+Open source library license credits:\n\n
+OkHttp\n\n
+Gson\n\n
+MPAndroidChart\n\n
+http://www.apache.org/licenses/LICENSE-2.0
+</string>
 </resources>
