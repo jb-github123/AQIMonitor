@@ -12,6 +12,7 @@ class MultipleResponseWebSocketListener(
 
     interface OnMultipleMessageReceivedListener {
         fun onMultipleAQIDataReceived(jsonString: String)
+        fun onConnectionFailure()
     }
 
     private val TAG = MultipleResponseWebSocketListener::class.java.simpleName

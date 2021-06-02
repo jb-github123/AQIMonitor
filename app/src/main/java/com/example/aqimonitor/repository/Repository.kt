@@ -27,6 +27,11 @@ class Repository(private val application: Application) :
 
     private var webSocket: WebSocket? = null
 
+    var repositoryResponseListener: RepositoryResponseListener? = null
+    interface RepositoryResponseListener {
+        fun onConnectionFailure()
+    }
+
     init {
         // get db instance
         val dbInstance = AppDatabase.getDatabaseInstance(application)
@@ -73,6 +78,10 @@ class Repository(private val application: Application) :
             saveAQIDataInDb(jsonString)
         }
 
+    }
+
+    override fun onConnectionFailure() {
+        repositoryResponseListener?.onConnectionFailure()
     }
 
     /**
