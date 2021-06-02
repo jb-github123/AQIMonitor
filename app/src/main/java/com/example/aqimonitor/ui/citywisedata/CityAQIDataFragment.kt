@@ -24,6 +24,7 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -32,6 +33,8 @@ class CityAQIDataFragment : Fragment() {
     private lateinit var cityAQIDataViewModel: CityAQIDataViewModel
     private lateinit var recyclerViewAQIData: RecyclerView
     private val aqiDataList = ArrayList<CityAQIData>()
+
+    private lateinit var connectionLostSnackBar: Snackbar
 
     private lateinit var lineChartAQIDataForACity: LineChart
     private val entryList = ArrayList<Entry>()
@@ -56,6 +59,12 @@ class CityAQIDataFragment : Fragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_city_aqi_data, container, false)
+
+        connectionLostSnackBar = Snackbar.make(
+            root,
+            "Unable to connect to server at the moment, try again after a while!",
+            Snackbar.LENGTH_LONG
+        ).setAction("Retry") { cityAQIDataViewModel.refreshCityAQIData() }
 
         val cityListAdapter = CityAQIDataListAdapter(aqiDataList)
         recyclerViewAQIData = root.findViewById(R.id.recyclerViewAQIData)
@@ -107,6 +116,10 @@ class CityAQIDataFragment : Fragment() {
             )
 
             setChartData()
+        })
+
+        cityAQIDataViewModel.isConnectionLost.observe(viewLifecycleOwner, Observer {
+            connectionLostSnackBar.show()
         })
 
         return root
