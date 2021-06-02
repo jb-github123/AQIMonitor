@@ -14,12 +14,17 @@ import com.example.aqimonitor.R
 import com.example.aqimonitor.database.model.CityAQIData
 import com.example.aqimonitor.ui.citywisedata.CityAQIDataViewModel
 import com.example.aqimonitor.ui.home.adapter.CityListAdapter
+import com.google.android.material.snackbar.Snackbar
 
-class HomeFragment : Fragment(), CityListAdapter.CitySelectedListener {
+class HomeFragment :
+    Fragment(),
+    CityListAdapter.CitySelectedListener {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerViewCities: RecyclerView
     private val cityList = ArrayList<CityAQIData>()
+
+    private lateinit var connectionLostSnackBar: Snackbar
 
     private lateinit var cityAQIDataViewModel: CityAQIDataViewModel
 
@@ -27,7 +32,8 @@ class HomeFragment : Fragment(), CityListAdapter.CitySelectedListener {
         super.onCreate(savedInstanceState)
 
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        cityAQIDataViewModel = ViewModelProvider(requireActivity()).get(CityAQIDataViewModel::class.java)
+        cityAQIDataViewModel =
+            ViewModelProvider(requireActivity()).get(CityAQIDataViewModel::class.java)
     }
 
     override fun onResume() {
@@ -36,9 +42,9 @@ class HomeFragment : Fragment(), CityListAdapter.CitySelectedListener {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
@@ -48,15 +54,26 @@ class HomeFragment : Fragment(), CityListAdapter.CitySelectedListener {
             textView.text = it
         })*/
 
+        connectionLostSnackBar = Snackbar.make(
+            root,
+            "Unable to connect to server at the moment, try again after a while!",
+            Snackbar.LENGTH_LONG
+        ).setAction("Retry") { homeViewModel.refreshCityAQIData() }
+
         val cityListAdapter = CityListAdapter(cityList, this)
         recyclerViewCities = root.findViewById(R.id.recyclerViewCities)
-        recyclerViewCities.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        recyclerViewCities.layoutManager =
+            LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         recyclerViewCities.adapter = cityListAdapter
 
         homeViewModel.getCityAQIDataFromDB().observe(viewLifecycleOwner, Observer {
             cityList.clear()
             cityList.addAll(it)
             recyclerViewCities.adapter?.notifyDataSetChanged()
+        })
+
+        homeViewModel.isConnectionLost.observe(viewLifecycleOwner, Observer {
+            connectionLostSnackBar.show()
         })
 
         return root

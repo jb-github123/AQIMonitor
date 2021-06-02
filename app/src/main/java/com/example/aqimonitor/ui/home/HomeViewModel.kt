@@ -6,7 +6,9 @@ import com.example.aqimonitor.database.model.CityAQIData
 import com.example.aqimonitor.repository.Repository
 import kotlinx.coroutines.launch
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
+class HomeViewModel(application: Application) :
+    AndroidViewModel(application),
+    Repository.RepositoryResponseListener {
 
     /*private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
@@ -15,14 +17,19 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: Repository = Repository(application)
 
-    /*private val cityList = MutableLiveData<List<CityAQIData>>()
-    val cityListLiveData = cityList*/
+    private val _isConnectionLost = MutableLiveData<Boolean>()
+    val isConnectionLost: LiveData<Boolean> = _isConnectionLost
+
+    init {
+        repository.repositoryResponseListener = this
+    }
 
     fun getCityAQIDataFromDB(): LiveData<List<CityAQIData>> {
         return repository.getAQIDataFromDB()
     }
 
     fun refreshCityAQIData(){
+        _isConnectionLost.value = false
         viewModelScope.launch {
             repository.refreshCityAQIData()
         }
@@ -30,6 +37,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun stopCityAQIDataUpdates(){
         repository.stopAQIDataUpdatesFromServer()
+    }
+
+    override fun onConnectionFailure() {
+        _isConnectionLost.value = true
     }
 
 }
