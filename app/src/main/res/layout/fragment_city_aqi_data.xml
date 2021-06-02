@@ -7,7 +7,7 @@
     tools:context=".ui.citywisedata.CityAQIDataFragment">
 
     <TextView
-        android:id="@+id/text_city_name"
+        android:id="@+id/textViewCity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -15,14 +15,14 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:textAlignment="center"
         android:textSize="@dimen/font_25"
-        app:layout_constraintEnd_toStartOf="@id/text_city_aqi"
+        app:layout_constraintEnd_toStartOf="@id/textViewCurrentAQI"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/cities" />
 
     <TextView
-        android:id="@+id/text_city_aqi"
+        android:id="@+id/textViewCurrentAQI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -31,7 +31,7 @@
         android:textAlignment="center"
         android:textSize="@dimen/font_25"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/text_city_name"
+        app:layout_constraintStart_toEndOf="@id/textViewCity"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/us_zipcodes" />
 
@@ -40,17 +40,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="text_city_aqi,text_city_name" />
+        app:constraint_referenced_ids="textViewCurrentAQI,textViewCity" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewAQIData"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_marginTop="@dimen/standard_margin_x2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrier1"
-        tools:listitem="@layout/recycler_view_row_city_aqi_data" />
+        app:layout_constraintTop_toBottomOf="@id/barrier1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChartAQIDataForACity"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="@dimen/standard_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier1" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewAQIData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/standard_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lineChartAQIDataForACity"
+                tools:listitem="@layout/recycler_view_row_city_aqi_data" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
